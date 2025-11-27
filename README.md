@@ -48,7 +48,7 @@ Score = (Taxa de Abertura * 40%)
 | **Total Bounce** | Envios que retornaram com erro. | `SUM(CASE WHEN R.nBounceType > 0 THEN 1 ELSE 0 END)` |
 | **Total Aberturas** | Pessoas únicas que abriram **ou** clicaram. | `COUNT(DISTINCT CASE WHEN R.nSentStatus >= 3 OR CLK.nURLID IS NOT NULL THEN R.nTargetID END)` |
 | **Total Cliques** | Pessoas únicas que clicaram em algum link. | `COUNT(DISTINCT CLK.nTargetID)` |
-| **Total Cancelamentos**| Descastros. | `0` (Fixo em 0, precisa de fonte de dados) |
+| **Total Cancelamentos**| Descadastros. | `0` (Fixo em 0, precisa de fonte de dados) |
 
 ---
 
@@ -92,7 +92,6 @@ WITH MetricBase AS (
     SELECT 
         C.aCampaignID,
         C.tCampaignName,
-        C.dDateofCreation,
         CASE WHEN C.bIsActive = 1 THEN 'ATIVA' ELSE 'DESATIVADA' END AS StatusCampanha,
         
         COUNT(R.aOBMReportMailerID) AS TotalEnviado,
@@ -112,7 +111,7 @@ WITH MetricBase AS (
                                    AND R.nTargetID = CLK.nTargetID
     WHERE C.bDeleted = 0
     GROUP BY 
-        C.aCampaignID, C.tCampaignName, C.dDateofCreation, C.bIsActive
+        C.aCampaignID, C.tCampaignName, C.bIsActive
 )
 
 SELECT 
